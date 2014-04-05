@@ -69,7 +69,7 @@ public class Main {
 		float profit = statement.executeQuery("SELECT PROFIT_COST FROM PRODUCTS WHERE CODE=\"" + productCode + "\"").getFloat(1);
 		String date = statement.executeQuery("SELECT EXPIRY FROM PRODUCTS WHERE CODE=\"" + productCode + "\"").getString(1);
 
-		String sqlII = "DELETE from PRODUCTS where CODE=\"" + productCode + "\" AND NAME=\"" + name + "\"";
+		String sqlII = "DELETE from PRODUCTS where CODE=\"" + productCode + "\"";
 		statement.executeUpdate(sqlII);
 		if (createNewRecord) {
 			String sql = "INSERT INTO PRODUCTS (ID,CODE,NAME,EXPIRY,BUY_COST,SELL_COST,PROFIT_COST,AMOUNT) VALUES (" + id + ",\"" + productCode + "\",\"" + name + "\",\"" + date + "\"," + buyCost + "," + sellCost + "," + profit + "," + left + ");";// ID,CODE,NAME,EXPIRY,REAL_COST,SELL_COST,PROFIT_COST
