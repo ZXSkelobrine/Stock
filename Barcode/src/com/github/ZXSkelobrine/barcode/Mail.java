@@ -17,12 +17,14 @@ import javax.mail.internet.MimeMessage;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
+@SuppressWarnings("unused")
 public final class Mail {
 	public static void sendMail(String toSend, String subject) throws MessagingException {
 		String host = "smtp.gmail.com";
 		String from = "zxstocktracker@gmail.com";
 		String pass = getPassFromFile();
 		String to = getToFromFile();
+		// TODO set the toAddress to the to variable
 		Properties props = System.getProperties();
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", host);

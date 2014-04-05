@@ -321,6 +321,16 @@ public class Remove extends JFrame {
 		JLabel lblName = new JLabel("Name");
 		lblName.setBounds(10, 57, 71, 14);
 		contentPane.add(lblName);
+
+		JButton btnReviewStock = new JButton("Review Stock");
+		btnReviewStock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				ProductReview.run();
+			}
+		});
+		btnReviewStock.setBounds(120, 222, 116, 40);
+		contentPane.add(btnReviewStock);
 	}
 
 	public static void setVisible() {

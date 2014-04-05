@@ -238,6 +238,10 @@ public class Main {
 		}
 	}
 
+	public static ResultSet runQuery(Statement statement, String query) throws SQLException {
+		return statement.executeQuery(query);
+	}
+
 	public static void runChecks() throws SQLException {
 		Thread t = new Thread() {
 			@Override

@@ -565,5 +565,15 @@ public class Window extends JFrame {
 		});
 		btnRemoveStock.setBounds(698, 270, 116, 40);
 		contentPane.add(btnRemoveStock);
+
+		JButton btnReviewStock = new JButton("Review Stock");
+		btnReviewStock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				ProductReview.run();
+			}
+		});
+		btnReviewStock.setBounds(578, 270, 116, 40);
+		contentPane.add(btnReviewStock);
 	}
 }
