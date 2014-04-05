@@ -5,9 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.alee.laf.WebLookAndFeel;
+
 import java.awt.Font;
 
 public class Window extends JFrame {
@@ -30,6 +33,8 @@ public class Window extends JFrame {
 	private JTextField profit;
 	private String selected = "productCode";
 	private JTextField amount;
+	private static Window frame;
+	private String icon = "/images/project_flame.png";
 
 	/**
 	 * Launch the application.
@@ -42,7 +47,7 @@ public class Window extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Window frame = new Window();
+					frame = new Window();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,11 +56,20 @@ public class Window extends JFrame {
 		});
 	}
 
+	public static void setVisible() {
+		frame.setVisible(true);
+	}
+
 	/**
 	 * Create the frame.
+	 * 
+	 * @throws IOException
 	 */
-	public Window() {
+	public Window() throws IOException {
+		setTitle("Project Flame - Stock Keeper - Add Stock");
 		WebLookAndFeel.install();
+		BufferedImage bi = ImageIO.read(Window.class.getResource(icon));
+		setIconImage(bi);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 830, 348);
 		contentPane = new JPanel();
@@ -79,10 +93,10 @@ public class Window extends JFrame {
 					break;
 				case "sell":
 					sell.setText(sell.getText() + "1");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "1");
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				}
 			}
@@ -106,10 +120,10 @@ public class Window extends JFrame {
 					break;
 				case "sell":
 					sell.setText(sell.getText() + "2");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "2");
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				}
 			}
@@ -133,10 +147,10 @@ public class Window extends JFrame {
 					break;
 				case "sell":
 					sell.setText(sell.getText() + "3");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "3");
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				}
 			}
@@ -160,10 +174,10 @@ public class Window extends JFrame {
 					break;
 				case "sell":
 					sell.setText(sell.getText() + "4");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "4");
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				}
 			}
@@ -187,10 +201,10 @@ public class Window extends JFrame {
 					break;
 				case "sell":
 					sell.setText(sell.getText() + "5");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "5");
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				}
 			}
@@ -214,10 +228,10 @@ public class Window extends JFrame {
 					break;
 				case "sell":
 					sell.setText(sell.getText() + "6");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "6");
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				}
 			}
@@ -241,10 +255,10 @@ public class Window extends JFrame {
 					break;
 				case "sell":
 					sell.setText(sell.getText() + "7");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "7");
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				}
 			}
@@ -268,10 +282,10 @@ public class Window extends JFrame {
 					break;
 				case "sell":
 					sell.setText(sell.getText() + "8");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "8");
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				}
 			}
@@ -295,10 +309,10 @@ public class Window extends JFrame {
 					break;
 				case "sell":
 					sell.setText(sell.getText() + "9");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "9");
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				}
 			}
@@ -322,10 +336,10 @@ public class Window extends JFrame {
 					break;
 				case "sell":
 					sell.setText(sell.getText() + "0");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "0");
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
 					break;
 				}
 			}
@@ -541,5 +555,15 @@ public class Window extends JFrame {
 		});
 		btnOverride.setBounds(367, 67, 81, 23);
 		contentPane.add(btnOverride);
+
+		JButton btnRemoveStock = new JButton("Remove Stock");
+		btnRemoveStock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Remove.run();
+			}
+		});
+		btnRemoveStock.setBounds(698, 270, 116, 40);
+		contentPane.add(btnRemoveStock);
 	}
 }

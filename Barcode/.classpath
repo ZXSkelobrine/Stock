@@ -10,5 +10,9 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/core-2.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/javase-2.2.jar"/>
+	<classpathentry kind="lib" path="res"/>
+	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Zips/Extracted Versions/Java Mail/javamail-1.4/mail.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Zips/Extracted Versions/JAF/jaf-1.1.1/activation.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/commons-codec-1.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

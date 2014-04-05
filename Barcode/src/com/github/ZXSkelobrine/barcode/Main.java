@@ -1,24 +1,14 @@
 package com.github.ZXSkelobrine.barcode;
 
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.Result;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
-import com.google.zxing.common.HybridBinarizer;
+import javax.mail.MessagingException;
 
 public class Main {
 	static Connection connection;
@@ -31,6 +21,8 @@ public class Main {
 			System.out.println("Connections are setup");
 			connectToDatabase("test");
 			System.out.println("Connected to database");
+			runChecks();
+			System.out.println("Checks run");
 			// "CREATE TABLE PRODUCTS (ID INT PRIMARY KEY NOT NULL, CODE TEXT NOT NULL, NAME TEXT NOT NULL, EXPIRY TEXT NOT NULL, BUY_COST REAL NOT NULL, SELL_COST REAL NOT NULL, PROFIT_COST REAL NOT NULL, AMOUNT INT NOT NULL)";
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -62,6 +54,24 @@ public class Main {
 		int id = rs.getInt(1) + 1;
 		String sql = "INSERT INTO PRODUCTS (ID,CODE,NAME,EXPIRY,BUY_COST,SELL_COST,PROFIT_COST,AMOUNT) VALUES (" + id + ",\"" + productCode + "\",\"" + name + "\",\"" + date + "\"," + buyCost + "," + sellCost + "," + profit + "," + amount + ");";// ID,CODE,NAME,EXPIRY,REAL_COST,SELL_COST,PROFIT_COST
 		statement.executeUpdate(sql);
+	}
+
+	public static void removeData(Statement statement, String productCode, String name, int amount) throws SQLException {
+		int left = statement.executeQuery("SELECT AMOUNT FROM PRODUCTS WHERE CODE=\"" + productCode + "\"").getInt(1) - amount;
+
+		boolean createNewRecord = left > 0;
+		int id = statement.executeQuery("SELECT ID FROM PRODUCTS WHERE CODE=\"" + productCode + "\"").getInt(1);
+		float buyCost = statement.executeQuery("SELECT BUY_COST FROM PRODUCTS WHERE CODE=\"" + productCode + "\"").getFloat(1);
+		float sellCost = statement.executeQuery("SELECT SELL_COST FROM PRODUCTS WHERE CODE=\"" + productCode + "\"").getFloat(1);
+		float profit = statement.executeQuery("SELECT PROFIT_COST FROM PRODUCTS WHERE CODE=\"" + productCode + "\"").getFloat(1);
+		String date = statement.executeQuery("SELECT EXPIRY FROM PRODUCTS WHERE CODE=\"" + productCode + "\"").getString(1);
+
+		String sqlII = "DELETE from PRODUCTS where CODE=\"" + productCode + "\" AND NAME=\"" + name + "\"";
+		statement.executeUpdate(sqlII);
+		if (createNewRecord) {
+			String sql = "INSERT INTO PRODUCTS (ID,CODE,NAME,EXPIRY,BUY_COST,SELL_COST,PROFIT_COST,AMOUNT) VALUES (" + id + ",\"" + productCode + "\",\"" + name + "\",\"" + date + "\"," + buyCost + "," + sellCost + "," + profit + "," + left + ");";// ID,CODE,NAME,EXPIRY,REAL_COST,SELL_COST,PROFIT_COST
+			statement.executeUpdate(sql);
+		}
 	}
 
 	public static void setupConnections() throws ClassNotFoundException, SQLException {
@@ -228,52 +238,47 @@ public class Main {
 		}
 	}
 
-	public static BufferedImage cutRectangle(BufferedImage image, Rectangle rec) {
-		return image.getSubimage(rec.x, rec.y, rec.width, rec.height);
-	}
+	public static void runChecks() throws SQLException {
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				ResultSet resultSet;
+				try {
+					resultSet = statement.executeQuery("SELECT * FROM PRODUCTS");
+					while (resultSet.next()) {
+						String date = resultSet.getString("EXPIRY");
+						int prod_day = Integer.parseInt(date.split("/")[0]);
+						System.out.println("Product Day: " + prod_day);
+						int prod_month = Integer.parseInt(date.split("/")[1]);
+						System.out.println("Product Month: " + prod_month);
+						int prod_year = Integer.parseInt(date.split("/")[2]);
+						System.out.println("Product Year: " + prod_year);
+						String currentDate = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+						int curr_day = Integer.parseInt(currentDate.split("/")[0]);
+						System.out.println("Current Day: " + curr_day);
+						int curr_month = Integer.parseInt(currentDate.split("/")[1]);
+						System.out.println("Current Month: " + curr_month);
+						int curr_year = Integer.parseInt(currentDate.split("/")[2]);
+						System.out.println("Current Year: " + curr_year);
+						if (prod_year == curr_year) {
+							if (curr_month == prod_month) {
+								if (curr_day == prod_day) {
+									Mail.sendMail("The product: " + resultSet.getString("NAME") + " is going out of date today. You currently own: " + resultSet.getInt("AMOUNT") + " of this product.", "Product Expiry");
+								}
+								if (curr_day + 1 == prod_day) {
+									Mail.sendMail("The product: " + resultSet.getString("NAME") + " is going out of date tomorrow. You currently own: " + resultSet.getInt("AMOUNT") + " of this product.", "Product Expiry");
+								}
+							}
+						}
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} catch (MessagingException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		t.start();
 
-	public static void test(BufferedImage filePath) throws Exception {
-
-		Map<DecodeHintType, Object> tmpHintsMap = new EnumMap<DecodeHintType, Object>(DecodeHintType.class);
-		tmpHintsMap.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
-		tmpHintsMap.put(DecodeHintType.POSSIBLE_FORMATS, EnumSet.allOf(BarcodeFormat.class));
-		tmpHintsMap.put(DecodeHintType.PURE_BARCODE, Boolean.FALSE);
-
-		String tmpRetString = BarCodeUtil.decode(filePath, tmpHintsMap);
-		// String tmpRetString = BarCodeUtil.decode(tmpFile, null);
-		System.out.println(tmpRetString);
-	}
-}
-
-class BarCodeUtil {
-	private static BarcodeFormat DEFAULT_BARCODE_FORMAT = BarcodeFormat.CODE_128;
-
-	/**
-	 * Decode method used to read image or barcode itself, and recognize the
-	 * barcode,
-	 * get the encoded contents and returns it.
-	 * 
-	 * @param whatFile
-	 *            image that need to be read.
-	 * @param config
-	 *            configuration used when reading the barcode.
-	 * @return decoded results from barcode.
-	 */
-	public static String decode(BufferedImage tmpBfrImage, Map<DecodeHintType, Object> whatHints) throws Exception {
-		if (tmpBfrImage == null) throw new IllegalArgumentException("Could not decode image.");
-		LuminanceSource tmpSource = new BufferedImageLuminanceSource(tmpBfrImage);
-		BinaryBitmap tmpBitmap = new BinaryBitmap(new HybridBinarizer(tmpSource));
-		MultiFormatReader tmpBarcodeReader = new MultiFormatReader();
-		Result tmpResult;
-		String tmpFinalResult;
-		try {
-			if (whatHints != null && !whatHints.isEmpty()) tmpResult = tmpBarcodeReader.decode(tmpBitmap, whatHints);
-			else tmpResult = tmpBarcodeReader.decode(tmpBitmap);
-			// setting results.
-			tmpFinalResult = String.valueOf(tmpResult.getText());
-		} catch (Exception tmpExcpt) {
-			throw new Exception("BarCodeUtil.decode Excpt err - " + tmpExcpt.toString() + " - " + tmpExcpt.getMessage());
-		}
-		return tmpFinalResult;
 	}
 }
