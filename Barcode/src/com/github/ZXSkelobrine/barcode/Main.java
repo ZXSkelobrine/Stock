@@ -1,5 +1,6 @@
 package com.github.ZXSkelobrine.barcode;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,10 +18,12 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
+			boolean create = new File("test.db").exists();
 			setupConnections();
 			System.out.println("Connections are setup");
 			connectToDatabase("test");
 			System.out.println("Connected to database");
+			if(!create)runCommand(statement, "6CREATE TABLE PRODUCTS (ID INT PRIMARY KEY NOT NULL, CODE TEXT NOT NULL, NAME TEXT NOT NULL, EXPIRY TEXT NOT NULL, BUY_COST REAL NOT NULL, SELL_COST REAL NOT NULL, PROFIT_COST REAL NOT NULL, AMOUNT INT NOT NULL)");
 			runChecks();
 			System.out.println("Checks run");
 			// "CREATE TABLE PRODUCTS (ID INT PRIMARY KEY NOT NULL, CODE TEXT NOT NULL, NAME TEXT NOT NULL, EXPIRY TEXT NOT NULL, BUY_COST REAL NOT NULL, SELL_COST REAL NOT NULL, PROFIT_COST REAL NOT NULL, AMOUNT INT NOT NULL)";

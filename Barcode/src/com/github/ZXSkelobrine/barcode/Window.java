@@ -54,6 +54,19 @@ public class Window extends JFrame {
 				}
 			}
 		});
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				try {
+					Main.connection.commit();
+					Main.statement.closeOnCompletion();
+					Main.connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public static void setVisible() {

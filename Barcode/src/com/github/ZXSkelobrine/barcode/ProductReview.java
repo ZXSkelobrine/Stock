@@ -51,6 +51,16 @@ public class ProductReview extends JFrame {
 		});
 		btnDetails.setBounds(314, 11, 89, 23);
 		contentPane.add(btnDetails);
+		
+		JButton btnReturn = new JButton("Return");
+		btnReturn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Window.setVisible();
+			}
+		});
+		btnReturn.setBounds(314, 84, 89, 23);
+		contentPane.add(btnReturn);
 	}
 
 	public static void run() {
