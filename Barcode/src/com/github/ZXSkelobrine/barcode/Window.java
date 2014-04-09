@@ -1,16 +1,22 @@
 package com.github.ZXSkelobrine.barcode;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,14 +25,11 @@ import javax.swing.border.EmptyBorder;
 
 import com.alee.laf.WebLookAndFeel;
 
-import java.awt.Font;
-
 public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField productCode;
-	private JTextField name;
 	private JTextField date;
 	private JTextField buy;
 	private JTextField sell;
@@ -34,7 +37,10 @@ public class Window extends JFrame {
 	private String selected = "productCode";
 	private JTextField amount;
 	private static Window frame;
-	private String icon = "/images/project_flame.png";
+	public static String icon = "/images/project_flame.png";
+	private JComboBox<String> cbxName;
+	private List<String> names = new ArrayList<String>();
+	private List<String> codes = new ArrayList<String>();
 
 	/**
 	 * Launch the application.
@@ -59,10 +65,9 @@ public class Window extends JFrame {
 			public void run() {
 				try {
 					Main.connection.commit();
-					Main.statement.closeOnCompletion();
+					Main.statement.close();
 					Main.connection.close();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -79,10 +84,23 @@ public class Window extends JFrame {
 	 * @throws IOException
 	 */
 	public Window() throws IOException {
-		setTitle("Project Flame - Stock Keeper - Add Stock");
+		try {
+			ResultSet rs = Main.runQuery(Main.statement, "SELECT * FROM PRODNAMES");
+			while (rs.next()) {
+				names.add(rs.getString("NAME"));
+				codes.add(rs.getString("CODE"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		WebLookAndFeel.install();
-		BufferedImage bi = ImageIO.read(Window.class.getResource(icon));
-		setIconImage(bi);
+		setTitle("Project Flame - Stock Keeper - Add Stock");
+		try {
+			BufferedImage bi = ImageIO.read(Window.class.getResource(Window.icon));
+			setIconImage(bi);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 830, 348);
 		contentPane = new JPanel();
@@ -96,7 +114,6 @@ public class Window extends JFrame {
 				switch (selected) {
 				case "productCode":
 					productCode.setText(productCode.getText() + "1");
-					name.setText(Main.getProductName(productCode.getText()));
 					break;
 				case "date":
 					date.setText(date.getText() + "1");
@@ -109,7 +126,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "1");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
 					break;
 				}
 			}
@@ -123,7 +140,6 @@ public class Window extends JFrame {
 				switch (selected) {
 				case "productCode":
 					productCode.setText(productCode.getText() + "2");
-					name.setText(Main.getProductName(productCode.getText()));
 					break;
 				case "date":
 					date.setText(date.getText() + "2");
@@ -136,7 +152,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "2");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
 					break;
 				}
 			}
@@ -150,7 +166,6 @@ public class Window extends JFrame {
 				switch (selected) {
 				case "productCode":
 					productCode.setText(productCode.getText() + "3");
-					name.setText(Main.getProductName(productCode.getText()));
 					break;
 				case "date":
 					date.setText(date.getText() + "3");
@@ -163,7 +178,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "3");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
 					break;
 				}
 			}
@@ -177,7 +192,6 @@ public class Window extends JFrame {
 				switch (selected) {
 				case "productCode":
 					productCode.setText(productCode.getText() + "4");
-					name.setText(Main.getProductName(productCode.getText()));
 					break;
 				case "date":
 					date.setText(date.getText() + "4");
@@ -190,7 +204,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "4");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
 					break;
 				}
 			}
@@ -204,7 +218,6 @@ public class Window extends JFrame {
 				switch (selected) {
 				case "productCode":
 					productCode.setText(productCode.getText() + "5");
-					name.setText(Main.getProductName(productCode.getText()));
 					break;
 				case "date":
 					date.setText(date.getText() + "5");
@@ -217,7 +230,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "5");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
 					break;
 				}
 			}
@@ -231,7 +244,6 @@ public class Window extends JFrame {
 				switch (selected) {
 				case "productCode":
 					productCode.setText(productCode.getText() + "6");
-					name.setText(Main.getProductName(productCode.getText()));
 					break;
 				case "date":
 					date.setText(date.getText() + "6");
@@ -244,7 +256,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "6");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
 					break;
 				}
 			}
@@ -258,7 +270,6 @@ public class Window extends JFrame {
 				switch (selected) {
 				case "productCode":
 					productCode.setText(productCode.getText() + "7");
-					name.setText(Main.getProductName(productCode.getText()));
 					break;
 				case "date":
 					date.setText(date.getText() + "7");
@@ -271,7 +282,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "7");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
 					break;
 				}
 			}
@@ -285,7 +296,6 @@ public class Window extends JFrame {
 				switch (selected) {
 				case "productCode":
 					productCode.setText(productCode.getText() + "8");
-					name.setText(Main.getProductName(productCode.getText()));
 					break;
 				case "date":
 					date.setText(date.getText() + "8");
@@ -298,7 +308,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "8");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
 					break;
 				}
 			}
@@ -312,7 +322,6 @@ public class Window extends JFrame {
 				switch (selected) {
 				case "productCode":
 					productCode.setText(productCode.getText() + "9");
-					name.setText(Main.getProductName(productCode.getText()));
 					break;
 				case "date":
 					date.setText(date.getText() + "9");
@@ -325,7 +334,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "9");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
 					break;
 				}
 			}
@@ -339,7 +348,7 @@ public class Window extends JFrame {
 				switch (selected) {
 				case "productCode":
 					productCode.setText(productCode.getText() + "0");
-					name.setText(Main.getProductName(productCode.getText()));
+					// name.setText(Main.getProductName(productCode.getText()));
 					break;
 				case "date":
 					date.setText(date.getText() + "0");
@@ -352,7 +361,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "0");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount(name.getText())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
 					break;
 				}
 			}
@@ -371,20 +380,6 @@ public class Window extends JFrame {
 		productCode.setBounds(81, 25, 285, 30);
 		contentPane.add(productCode);
 		productCode.setColumns(10);
-
-		name = new JTextField();
-		name.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		name.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				selected = "name";
-			}
-		});
-		name.setEditable(false);
-		name.setEnabled(false);
-		name.setBounds(81, 61, 285, 30);
-		contentPane.add(name);
-		name.setColumns(10);
 
 		date = new JTextField();
 		date.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -545,7 +540,7 @@ public class Window extends JFrame {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Main.insertData(Main.statement, productCode.getText(), name.getText(), date.getText(), Float.parseFloat(buy.getText()), Float.parseFloat(sell.getText()), Integer.parseInt(amount.getText()));
+					Main.insertData(Main.statement, productCode.getText(), (String) cbxName.getSelectedItem(), date.getText(), Float.parseFloat(buy.getText()), Float.parseFloat(sell.getText()), Integer.parseInt(amount.getText()));
 				} catch (NumberFormatException | SQLException e1) {
 					e1.printStackTrace();
 				}
@@ -557,16 +552,10 @@ public class Window extends JFrame {
 		JButton btnOverride = new JButton("Override");
 		btnOverride.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (name.isEditable() && name.isEnabled()) {
-					name.setEditable(false);
-					name.setEnabled(false);
-				} else if (!name.isEditable() && !name.isEnabled()) {
-					name.setEditable(true);
-					name.setEnabled(true);
-				}
+				new NameOverride();
 			}
 		});
-		btnOverride.setBounds(367, 67, 81, 23);
+		btnOverride.setBounds(376, 48, 81, 23);
 		contentPane.add(btnOverride);
 
 		JButton btnRemoveStock = new JButton("Remove Stock");
@@ -588,5 +577,43 @@ public class Window extends JFrame {
 		});
 		btnReviewStock.setBounds(578, 270, 116, 40);
 		contentPane.add(btnReviewStock);
+
+		String[] name = new String[names.size()];
+		names.toArray(name);
+		cbxName = new JComboBox<String>();
+		cbxName.setModel(new DefaultComboBoxModel<String>(name));
+		cbxName.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (arg0.getSource() instanceof JComboBox) {
+					String code = codes.get(((JComboBox<?>) arg0.getSource()).getSelectedIndex());
+					productCode.setText(code);
+				}
+			}
+		});
+		cbxName.setBounds(81, 61, 285, 30);
+		contentPane.add(cbxName);
+
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				names.clear();
+				codes.clear();
+				try {
+					ResultSet rs = Main.runQuery(Main.statement, "SELECT * FROM PRODNAMES");
+					while (rs.next()) {
+						names.add(rs.getString("NAME"));
+						codes.add(rs.getString("CODE"));
+					}
+					String[] name = new String[names.size()];
+					names.toArray(name);
+					cbxName.setModel(new DefaultComboBoxModel<String>(name));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		btnUpdate.setBounds(376, 72, 81, 23);
+		contentPane.add(btnUpdate);
 	}
 }

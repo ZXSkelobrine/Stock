@@ -3,7 +3,10 @@ package com.github.ZXSkelobrine.barcode;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,6 +39,14 @@ public class Details extends JFrame {
 		float sell = product.getSell();
 		float profit = product.getProfit();
 		int amount = product.getAmount();
+		
+		setTitle("Project Flame - Stock Keeper - Details on Stock");
+		try {
+			BufferedImage bi = ImageIO.read(Window.class.getResource(Window.icon));
+			setIconImage(bi);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 261, 325);

@@ -5,14 +5,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class ProductReview extends JFrame {
 
@@ -25,6 +29,13 @@ public class ProductReview extends JFrame {
 	 * Create the frame.
 	 */
 	public ProductReview() {
+		setTitle("Project Flame - Stock Keeper - Review Stock");
+		try {
+			BufferedImage bi = ImageIO.read(Window.class.getResource(Window.icon));
+			setIconImage(bi);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 434, 454);
 		contentPane = new JPanel();
@@ -44,14 +55,12 @@ public class ProductReview extends JFrame {
 					for (Product product : products) {
 						if (product.getName().equals(list.getSelectedValue())) new Details(product);
 					}
-				} else {
-					System.out.println("is null");
 				}
 			}
 		});
 		btnDetails.setBounds(314, 11, 89, 23);
 		contentPane.add(btnDetails);
-		
+
 		JButton btnReturn = new JButton("Return");
 		btnReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -61,6 +70,20 @@ public class ProductReview extends JFrame {
 		});
 		btnReturn.setBounds(314, 84, 89, 23);
 		contentPane.add(btnReturn);
+
+		JButton btnRemove = new JButton("Remove");
+		btnRemove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (list.getSelectedValue() != null) {
+					for (Product product : products) {
+						if (product.getName().equals(list.getSelectedValue())) new RemovePrompt(product);
+
+					}
+				}
+			}
+		});
+		btnRemove.setBounds(314, 45, 89, 23);
+		contentPane.add(btnRemove);
 	}
 
 	public static void run() {

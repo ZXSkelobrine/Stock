@@ -5,14 +5,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JComboBox;
 
 public class Remove extends JFrame {
 
@@ -22,7 +30,9 @@ public class Remove extends JFrame {
 	private JTextField txtAmount;
 	private String selectedItem = "barcode";
 	private static Remove frame;
-	private JTextField txtName;
+	private JComboBox<String> cbxName;
+	private List<String> names = new ArrayList<String>();
+	private List<String> codes = new ArrayList<String>();
 
 	public static void run() {
 		frame = new Remove();
@@ -33,7 +43,22 @@ public class Remove extends JFrame {
 	 * Create the frame.
 	 */
 	public Remove() {
+		try {
+			ResultSet rs = Main.runQuery(Main.statement, "SELECT * FROM PRODNAMES");
+			while (rs.next()) {
+				names.add(rs.getString("NAME"));
+				codes.add(rs.getString("CODE"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		setTitle("Project Flame - Stock Keeper - Remove Stock");
+		try {
+			BufferedImage bi = ImageIO.read(Window.class.getResource(Window.icon));
+			setIconImage(bi);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 827, 300);
 		contentPane = new JPanel();
@@ -105,7 +130,6 @@ public class Remove extends JFrame {
 				switch (selectedItem) {
 				case "barcode":
 					txtBarcode.setText(txtBarcode.getText() + "0");
-					txtName.setText(Main.getProductName(txtBarcode.getText()));
 					break;
 				case "amount":
 					txtAmount.setText(txtAmount.getText() + "0");
@@ -122,7 +146,6 @@ public class Remove extends JFrame {
 				switch (selectedItem) {
 				case "barcode":
 					txtBarcode.setText(txtBarcode.getText() + "7");
-					txtName.setText(Main.getProductName(txtBarcode.getText()));
 					break;
 				case "amount":
 					txtAmount.setText(txtAmount.getText() + "7");
@@ -139,7 +162,6 @@ public class Remove extends JFrame {
 				switch (selectedItem) {
 				case "barcode":
 					txtBarcode.setText(txtBarcode.getText() + "8");
-					txtName.setText(Main.getProductName(txtBarcode.getText()));
 					break;
 				case "amount":
 					txtAmount.setText(txtAmount.getText() + "8");
@@ -156,7 +178,6 @@ public class Remove extends JFrame {
 				switch (selectedItem) {
 				case "barcode":
 					txtBarcode.setText(txtBarcode.getText() + "9");
-					txtName.setText(Main.getProductName(txtBarcode.getText()));
 					break;
 				case "amount":
 					txtAmount.setText(txtAmount.getText() + "9");
@@ -173,7 +194,6 @@ public class Remove extends JFrame {
 				switch (selectedItem) {
 				case "barcode":
 					txtBarcode.setText(txtBarcode.getText() + "4");
-					txtName.setText(Main.getProductName(txtBarcode.getText()));
 					break;
 				case "amount":
 					txtAmount.setText(txtAmount.getText() + "4");
@@ -190,7 +210,6 @@ public class Remove extends JFrame {
 				switch (selectedItem) {
 				case "barcode":
 					txtBarcode.setText(txtBarcode.getText() + "5");
-					txtName.setText(Main.getProductName(txtBarcode.getText()));
 					break;
 				case "amount":
 					txtAmount.setText(txtAmount.getText() + "5");
@@ -207,7 +226,6 @@ public class Remove extends JFrame {
 				switch (selectedItem) {
 				case "barcode":
 					txtBarcode.setText(txtBarcode.getText() + "6");
-					txtName.setText(Main.getProductName(txtBarcode.getText()));
 					break;
 				case "amount":
 					txtAmount.setText(txtAmount.getText() + "6");
@@ -240,7 +258,6 @@ public class Remove extends JFrame {
 				switch (selectedItem) {
 				case "barcode":
 					txtBarcode.setText(txtBarcode.getText() + "1");
-					txtName.setText(Main.getProductName(txtBarcode.getText()));
 					break;
 				case "amount":
 					txtAmount.setText(txtAmount.getText() + "1");
@@ -257,7 +274,6 @@ public class Remove extends JFrame {
 				switch (selectedItem) {
 				case "barcode":
 					txtBarcode.setText(txtBarcode.getText() + "2");
-					txtName.setText(Main.getProductName(txtBarcode.getText()));
 					break;
 				case "amount":
 					txtAmount.setText(txtAmount.getText() + "2");
@@ -274,7 +290,6 @@ public class Remove extends JFrame {
 				switch (selectedItem) {
 				case "barcode":
 					txtBarcode.setText(txtBarcode.getText() + "3");
-					txtName.setText(Main.getProductName(txtBarcode.getText()));
 					break;
 				case "amount":
 					txtAmount.setText(txtAmount.getText() + "3");
@@ -291,7 +306,6 @@ public class Remove extends JFrame {
 				switch (selectedItem) {
 				case "barcode":
 					txtBarcode.setText(txtBarcode.getText().substring(0, txtBarcode.getText().length() - 1));
-					txtName.setText(Main.getProductName(txtBarcode.getText()));
 					break;
 				case "amount":
 					txtAmount.setText(txtAmount.getText().substring(0, txtAmount.getText().length() - 1));
@@ -312,12 +326,6 @@ public class Remove extends JFrame {
 		btnAddStock.setBounds(0, 222, 116, 40);
 		contentPane.add(btnAddStock);
 
-		txtName = new JTextField();
-		txtName.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtName.setColumns(10);
-		txtName.setBounds(81, 48, 285, 30);
-		contentPane.add(txtName);
-
 		JLabel lblName = new JLabel("Name");
 		lblName.setBounds(10, 57, 71, 14);
 		contentPane.add(lblName);
@@ -331,6 +339,44 @@ public class Remove extends JFrame {
 		});
 		btnReviewStock.setBounds(120, 222, 116, 40);
 		contentPane.add(btnReviewStock);
+
+		String[] name = new String[names.size()];
+		names.toArray(name);
+		cbxName = new JComboBox<String>();
+		cbxName.setModel(new DefaultComboBoxModel<String>(name));
+		cbxName.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (arg0.getSource() instanceof JComboBox) {
+					String code = codes.get(((JComboBox<?>) arg0.getSource()).getSelectedIndex());
+					txtBarcode.setText(code);
+				}
+			}
+		});
+		cbxName.setBounds(81, 48, 285, 30);
+		contentPane.add(cbxName);
+
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				names.clear();
+				codes.clear();
+				try {
+					ResultSet rs = Main.runQuery(Main.statement, "SELECT * FROM PRODNAMES");
+					while (rs.next()) {
+						names.add(rs.getString("NAME"));
+						codes.add(rs.getString("CODE"));
+					}
+					String[] name = new String[names.size()];
+					names.toArray(name);
+					cbxName.setModel(new DefaultComboBoxModel<String>(name));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		btnUpdate.setBounds(367, 53, 89, 23);
+		contentPane.add(btnUpdate);
 	}
 
 	public static void setVisible() {

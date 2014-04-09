@@ -14,18 +14,17 @@ import javax.mail.MessagingException;
 public class Main {
 	static Connection connection;
 	static Statement statement;
-	static String path = "C:/Users/Ryan.D/Desktop/Barcodes/barcode_image.JPG";
 
 	public static void main(String[] args) {
 		try {
-			boolean create = new File("test.db").exists();
-			setupConnections();
-			System.out.println("Connections are setup");
-			connectToDatabase("test");
-			System.out.println("Connected to database");
-			if(!create)runCommand(statement, "6CREATE TABLE PRODUCTS (ID INT PRIMARY KEY NOT NULL, CODE TEXT NOT NULL, NAME TEXT NOT NULL, EXPIRY TEXT NOT NULL, BUY_COST REAL NOT NULL, SELL_COST REAL NOT NULL, PROFIT_COST REAL NOT NULL, AMOUNT INT NOT NULL)");
-			runChecks();
-			System.out.println("Checks run");
+			{
+				boolean create = new File("C:/StockKeeper/products.db").exists();
+				setupConnections("C:/StockKeeper/products.db");
+				connection.setAutoCommit(false);
+				if (!create) runCommand(statement, "CREATE TABLE PRODUCTS (ID INT PRIMARY KEY NOT NULL, CODE TEXT NOT NULL, NAME TEXT NOT NULL, EXPIRY TEXT NOT NULL, BUY_COST REAL NOT NULL, SELL_COST REAL NOT NULL, PROFIT_COST REAL NOT NULL, AMOUNT INT NOT NULL)");
+				if (!create) runCommand(statement, "CREATE TABLE PRODNAMES (ID INT PRIMARY KEY NOT NULL, CODE TEXT NOT NULL, NAME TEXT NOT NULL)");
+				runChecks();
+			}
 			// "CREATE TABLE PRODUCTS (ID INT PRIMARY KEY NOT NULL, CODE TEXT NOT NULL, NAME TEXT NOT NULL, EXPIRY TEXT NOT NULL, BUY_COST REAL NOT NULL, SELL_COST REAL NOT NULL, PROFIT_COST REAL NOT NULL, AMOUNT INT NOT NULL)";
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -34,13 +33,16 @@ public class Main {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private static void runCommand(Statement statement, String command) throws SQLException {
 		statement.executeUpdate(command);
 	}
 
 	public static Connection connectToDatabase(String databaseName) throws SQLException {
 		return DriverManager.getConnection("jdbc:sqlite:" + databaseName + ".db");
+	}
+
+	public static Connection connectToDatabaseFP(String path) throws SQLException {
+		return DriverManager.getConnection("jdbc:sqlite:" + path);
 	}
 
 	public static void createTable(Statement statement, String... strings) throws SQLException {
@@ -77,9 +79,9 @@ public class Main {
 		}
 	}
 
-	public static void setupConnections() throws ClassNotFoundException, SQLException {
+	public static void setupConnections(String path) throws ClassNotFoundException, SQLException {
 		Class.forName("org.sqlite.JDBC");
-		connection = DriverManager.getConnection("jdbc:sqlite:test.db");
+		connection = connectToDatabaseFP(path);
 		System.out.println("Opened");
 		statement = connection.createStatement();
 	}
@@ -245,6 +247,12 @@ public class Main {
 		return statement.executeQuery(query);
 	}
 
+	public static void addName(Statement statement, String name, String barcode) throws SQLException {
+		ResultSet rs = statement.executeQuery("SELECT COUNT(*) FROM PRODUCTS");
+		int id = rs.getInt(1) + 1;
+		statement.executeUpdate("INSERT INTO PRODNAMES (ID,CODE,NAME) VALUES (" + id + ",\"" + barcode + "\",\"" + name + "\");");
+	}
+
 	public static void runChecks() throws SQLException {
 		Thread t = new Thread() {
 			@Override
@@ -255,18 +263,12 @@ public class Main {
 					while (resultSet.next()) {
 						String date = resultSet.getString("EXPIRY");
 						int prod_day = Integer.parseInt(date.split("/")[0]);
-						System.out.println("Product Day: " + prod_day);
 						int prod_month = Integer.parseInt(date.split("/")[1]);
-						System.out.println("Product Month: " + prod_month);
 						int prod_year = Integer.parseInt(date.split("/")[2]);
-						System.out.println("Product Year: " + prod_year);
 						String currentDate = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
 						int curr_day = Integer.parseInt(currentDate.split("/")[0]);
-						System.out.println("Current Day: " + curr_day);
 						int curr_month = Integer.parseInt(currentDate.split("/")[1]);
-						System.out.println("Current Month: " + curr_month);
 						int curr_year = Integer.parseInt(currentDate.split("/")[2]);
-						System.out.println("Current Year: " + curr_year);
 						if (prod_year == curr_year) {
 							if (curr_month == prod_month) {
 								if (curr_day == prod_day) {
