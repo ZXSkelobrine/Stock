@@ -2,17 +2,18 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/sqlite-jdbc4-3.8.2-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/weblaf-1.27.jar" sourcepath="C:/Users/Ryan/Downloads/General Files/Jars/Libs/Sources/weblaf-src-1.27.zip">
+	<classpathentry exported="true" kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/sqlite-jdbc4-3.8.2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/weblaf-1.27.jar" sourcepath="C:/Users/Ryan/Downloads/General Files/Jars/Libs/Sources/weblaf-src-1.27.zip">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/C:/Users/Ryan/Downloads/General%20Files/Jars/Libs/JavaDocs/weblaf-javadoc-1.27.zip!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/core-2.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/javase-2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/core-2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/javase-2.2.jar"/>
 	<classpathentry kind="lib" path="res"/>
-	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Zips/Extracted Versions/Java Mail/javamail-1.4/mail.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Zips/Extracted Versions/JAF/jaf-1.1.1/activation.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/commons-codec-1.9.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Ryan/Downloads/General Files/Zips/Extracted Versions/Java Mail/javamail-1.4/mail.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Ryan/Downloads/General Files/Zips/Extracted Versions/JAF/jaf-1.1.1/activation.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/commons-codec-1.9.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Ryan/Downloads/General Files/Jars/Libs/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

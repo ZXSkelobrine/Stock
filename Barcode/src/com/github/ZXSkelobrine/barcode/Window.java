@@ -108,6 +108,10 @@ public class Window extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		JLabel lblVersion = new JLabel("Version: " + Main.CURRENT_VERSION);
+		lblVersion.setBounds(0, 296, 81, 14);
+		contentPane.add(lblVersion);
+
 		JButton b1 = new JButton("1");
 		b1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -126,7 +130,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "1");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText()))));
 					break;
 				}
 			}
@@ -152,7 +156,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "2");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText()))));
 					break;
 				}
 			}
@@ -178,7 +182,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "3");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText()))));
 					break;
 				}
 			}
@@ -204,7 +208,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "4");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText()))));
 					break;
 				}
 			}
@@ -230,7 +234,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "5");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText()))));
 					break;
 				}
 			}
@@ -256,7 +260,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "6");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText()))));
 					break;
 				}
 			}
@@ -282,7 +286,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "7");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText()))));
 					break;
 				}
 			}
@@ -308,7 +312,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "8");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText()))));
 					break;
 				}
 			}
@@ -334,7 +338,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "9");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText()))));
 					break;
 				}
 			}
@@ -361,7 +365,7 @@ public class Window extends JFrame {
 					break;
 				case "amount":
 					amount.setText(amount.getText() + "0");
-					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText())) * Main.getTimesAmount((String) cbxName.getSelectedItem())));
+					profit.setText(String.valueOf(((Float.parseFloat(sell.getText()) - Float.parseFloat(buy.getText())) * Integer.parseInt(amount.getText()))));
 					break;
 				}
 			}
@@ -581,6 +585,7 @@ public class Window extends JFrame {
 		String[] name = new String[names.size()];
 		names.toArray(name);
 		cbxName = new JComboBox<String>();
+		cbxName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		cbxName.setModel(new DefaultComboBoxModel<String>(name));
 		cbxName.addActionListener(new ActionListener() {
 			@Override
@@ -615,5 +620,6 @@ public class Window extends JFrame {
 		});
 		btnUpdate.setBounds(376, 72, 81, 23);
 		contentPane.add(btnUpdate);
+
 	}
 }

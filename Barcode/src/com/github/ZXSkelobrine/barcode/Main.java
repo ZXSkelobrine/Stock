@@ -1,6 +1,8 @@
 package com.github.ZXSkelobrine.barcode;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,8 +16,10 @@ import javax.mail.MessagingException;
 public class Main {
 	static Connection connection;
 	static Statement statement;
+	public static final double CURRENT_VERSION = 1.3;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws MalformedURLException, IOException {
+		Update.updateCheck(CURRENT_VERSION);
 		try {
 			{
 				boolean create = new File("C:/StockKeeper/products.db").exists();
@@ -165,81 +169,6 @@ public class Main {
 			return "Topic 4 Pack";
 		default:
 			return "UNKNOWN";
-		}
-	}
-
-	public static int getTimesAmount(String name) {
-		switch (name) {
-		case "Boost 4 Pack":
-			return 4;
-		case "Rolo 4 Pack":
-			return 4;
-		case "Snickers 4 Pack":
-			return 4;
-		case "Poppets Mint 36 Pack":
-			return 36;
-		case "Poppets Toffee 36 Pack":
-			return 36;
-		case "KitKat 4 Pack":
-			return 4;
-		case "KitKat Chunky 4 Pack":
-			return 4;
-		case "Refresher Single":
-			return 1;
-		case "Turkish Delight 4 Pack":
-			return 4;
-		case "Wispa 4 Pack":
-			return 4;
-		case "Double Decker 8 4 Pack Box":
-			return 8 * 4;
-		case "Double Decker 4 Pack":
-			return 4;
-		case "Picnic 10 4 Pack Box":
-			return 4 * 10;
-		case "Galaxy 4 Pack":
-			return 4;
-		case "KitKat 2x4 Pack":
-			return 2 * 4;
-		case "Ripple 4 Pack":
-			return 4;
-		case "Caramel Wafer Biscuit 6 Pack":
-			return 6;
-		case "Caramel Log 6 Pack":
-			return 6;
-		case "Chewits 6 Pack":
-			return 6;
-		case "Daim 4 Pack":
-			return 4;
-		case "Gold 9 Pack":
-			return 9;
-		case "Smarties 12 4 Pack Box":
-			return 12 * 4;
-		case "Smarties 4 Pack":
-			return 4;
-		case "Snowball 6 Pack":
-			return 6;
-		case "Tea Cake 6 Pack":
-			return 6;
-		case "Creme Egg 48 Pack":
-			return 48;
-		case "Creme Egg Single":
-			return 1;
-		case "Mini Cheddars 7 Pack Assorted":
-			return 7;
-		case "Weetabix On The Go Fruit And Fibre 5 Pack":
-			return 5;
-		case "Weetabix On The Go Apple 5 Pack":
-			return 5;
-		case "Oat So Simple Oats And Fruit 6 Pack":
-			return 6;
-		case "Oats 2 Go":
-			return 1;
-		case "Bounty 4 by 2 Pack":
-			return 4;
-		case "Topic 4 Pack":
-			return 4;
-		default:
-			return 1;
 		}
 	}
 
