@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.awt.print.Printable;
 import java.io.IOException;
 
 public class ProductReview extends JFrame {
@@ -84,6 +85,16 @@ public class ProductReview extends JFrame {
 		});
 		btnRemove.setBounds(314, 45, 89, 23);
 		contentPane.add(btnRemove);
+
+		JButton btnPrint = new JButton("Print");
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Printer.setProducts(products);
+				Printing.print();
+			}
+		});
+		btnPrint.setBounds(314, 116, 89, 23);
+		contentPane.add(btnPrint);
 	}
 
 	public static void run() {

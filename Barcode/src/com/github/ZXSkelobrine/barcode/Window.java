@@ -64,6 +64,7 @@ public class Window extends JFrame {
 			@Override
 			public void run() {
 				try {
+					System.out.println("Commiting");
 					Main.connection.commit();
 					Main.statement.close();
 					Main.connection.close();
