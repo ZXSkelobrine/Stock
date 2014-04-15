@@ -16,7 +16,7 @@ import javax.mail.MessagingException;
 public class Main {
 	static Connection connection;
 	static Statement statement;
-	public static final double CURRENT_VERSION = 1.3;
+	public static final double CURRENT_VERSION = 1.4;
 
 	public static void main(String[] args) throws MalformedURLException, IOException {
 		Update.updateCheck(CURRENT_VERSION);
