@@ -15,6 +15,7 @@ import java.util.List;
 public class Printer implements Printable {
 	private static Product[] productsArray;
 	private static List<Product> productsList;
+	private static String title;
 
 	public static void setProducts(Product[] products) {
 		Printer.productsArray = products;
@@ -24,16 +25,28 @@ public class Printer implements Printable {
 		Printer.productsList = products;
 	}
 
+	public static void setTitle(String title) {
+		Printer.title = title;
+	}
+
 	@Override
 	public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
 		if (page > 0) {
 			return NO_SUCH_PAGE;
 		}
+		currentRecord = 65;
+		name = 60;
+		barcode = 160;
+		expiry = 240;
+		buy = 330;
+		sell = 380;
+		profit = 430;
+		amount = 480;
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.translate(pf.getImageableX(), pf.getImageableY());
 		Rectangle b = g.getClipBounds();
 		{
-			g.setFont(new Font(Font.DIALOG, Font.TRUETYPE_FONT, 7));
+			g.setFont(new Font(Font.DIALOG, Font.TRUETYPE_FONT, 6));
 			titleDate(g);
 			drawRectangle(b, g);
 			drawTable(b, g);
@@ -72,10 +85,10 @@ public class Printer implements Printable {
 	}
 
 	private void titleDate(Graphics g) {
-		g.drawString(new SimpleDateFormat().format(Calendar.getInstance().getTime()) + " - Stock Take Summary", 50, 40);
+		g.drawString(new SimpleDateFormat().format(Calendar.getInstance().getTime()) + " - " + title, 50, 40);
 	}
 
-	static int currentRecord = 45;
+	static int currentRecord = 65;
 
 	private void drawRecord(Product product, Graphics g) {
 		g.drawString(product.getName(), name, currentRecord);
@@ -85,24 +98,28 @@ public class Printer implements Printable {
 		g.drawString(product.getSell() + "", sell, currentRecord);
 		g.drawString(new DecimalFormat("#.##").format(product.getProfit()), profit, currentRecord);
 		g.drawString(product.getAmount() + "", amount, currentRecord);
+		currentRecord += 20;
 	}
 
 	private void drawRecords(Product[] products, Graphics g) {
 		for (Product p : products) {
-			drawRecord(p, g);
-			currentRecord += 20;
+			if (p.getName() != null && !p.getName().equals("")) {
+				drawRecord(p, g);
+			}
 		}
 	}
 
 	private void drawRecords(List<Product> products, Graphics g) {
 		for (Product p : products) {
-			drawRecord(p, g);
-			currentRecord += 20;
+			if (p.getName() != null && !p.getName().equals("")) {
+				drawRecord(p, g);
+			}
 		}
 	}
 
 	public static void reset() {
-		currentRecord = 45;
+		currentRecord = 65;
+		productsArray = null;
+		productsList = null;
 	}
-
 }

@@ -14,8 +14,8 @@ import java.util.Calendar;
 import javax.mail.MessagingException;
 
 public class Main {
-	static Connection connection;
-	static Statement statement;
+	public static Connection connection;
+	public static Statement statement;
 	public static final double CURRENT_VERSION = 1.4;
 
 	public static void main(String[] args) throws MalformedURLException, IOException {

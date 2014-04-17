@@ -1,5 +1,9 @@
 package com.github.ZXSkelobrine.barcode;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,12 +16,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
-import java.awt.print.Printable;
-import java.io.IOException;
 
 public class ProductReview extends JFrame {
 
@@ -89,8 +87,12 @@ public class ProductReview extends JFrame {
 		JButton btnPrint = new JButton("Print");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Printer.setProducts(products);
-				Printing.print();
+				try {
+					Runthrough.runThrough(products);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				Printing.doublePrint(products, Runthrough.getNeeded());
 			}
 		});
 		btnPrint.setBounds(314, 116, 89, 23);
